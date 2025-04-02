@@ -9,12 +9,12 @@ interface Card {
   url: string;
   name: string;
   intro: string;
+  image: string | null;
 }
 
 export default function MyPage() {
   const [cards, setCards] = useState<Card[]>([]);
   const [loading, setLoading] = useState(true);
-  const [copiedUrl, setCopiedUrl] = useState<string | null>(null); // 🔗 복사 상태
   const router = useRouter();
 
   useEffect(() => {
@@ -24,13 +24,18 @@ export default function MyPage() {
       } = await supabase.auth.getUser();
 
       if (!user) {
-        router.push('/login');
+        await supabase.auth.signInWithOAuth({
+          provider: 'google',
+          options: {
+            redirectTo: `${window.location.origin}/auth/callback`,
+          },
+        });
         return;
       }
 
       const { data, error } = await supabase
         .from('users')
-        .select('id, url, name, intro')
+        .select('id, url, name, intro, image')
         .eq('auth_user_id', user.id);
 
       if (error) {
@@ -61,7 +66,7 @@ export default function MyPage() {
       .from('users')
       .delete()
       .eq('id', cardId)
-      .eq('auth_user_id', user.id); // 🔐 보안 체크
+      .eq('auth_user_id', user.id);
 
     if (error) {
       alert('삭제에 실패했어요 😢');
@@ -72,59 +77,56 @@ export default function MyPage() {
     setCards((prev) => prev.filter((card) => card.id !== cardId));
   };
 
-  const handleCopy = async (url: string) => {
-    const fullUrl = `${window.location.origin}/profile/${url}`;
-    await navigator.clipboard.writeText(fullUrl);
-    setCopiedUrl(url);
-
-    setTimeout(() => {
-      setCopiedUrl(null);
-    }, 1500);
-  };
-
   if (loading) return <p className="p-6 text-center">로딩 중...</p>;
 
   return (
     <div className="min-h-screen p-6">
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold">내 명함 목록</h1>
         <button
-          onClick={() => router.push('/')}
-          className="bg-indigo-600 text-white px-4 py-2 rounded"
+          onClick={() => router.push('/edit')}
+          className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-full shadow"
         >
           ➕ 명함 추가하기
         </button>
       </div>
 
-      <ul className="space-y-4">
+      <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {cards.map((card) => (
-          <li key={card.id} className="border p-4 rounded shadow-sm">
-            <h2 className="text-xl font-semibold">{card.name}</h2>
-            <p className="text-gray-600">{card.intro}</p>
-            <div className="mt-2 flex gap-2 flex-wrap">
+          <li
+            key={card.id}
+            className="bg-white rounded-xl shadow-md border border-gray-100 p-4 flex flex-col justify-between transition-transform duration-200 hover:-translate-y-1 hover:shadow-xl"
+          >
+            <div className="flex gap-4">
+              <img
+                src={card.image || '/someone.png'}
+                alt="thumbnail"
+                className="w-16 h-16 object-cover rounded-lg"
+              />
+              <div>
+                <h2 className="text-lg font-bold text-gray-900">{card.name}</h2>
+                <p className="text-gray-600 text-sm line-clamp-2">{card.intro}</p>
+              </div>
+            </div>
+
+            <div className="mt-4 flex flex-wrap gap-2">
               <button
                 onClick={() => router.push(`/profile/${card.url}`)}
-                className="bg-blue-500 text-white px-3 py-1 rounded"
+                className="bg-blue-800 hover:bg-blue-600 text-white px-3 py-1 rounded-full text-sm"
               >
                 보기
               </button>
               <button
                 onClick={() => router.push(`/edit/${card.url}`)}
-                className="bg-green-500 text-white px-3 py-1 rounded"
+                className="bg-green-800 hover:bg-green-600 text-white px-3 py-1 rounded-full text-sm"
               >
                 수정
               </button>
               <button
                 onClick={() => handleDelete(card.id)}
-                className="bg-red-500 text-white px-3 py-1 rounded"
+                className="bg-red-700 hover:bg-red-600 text-white px-3 py-1 rounded-full text-sm"
               >
                 삭제
-              </button>
-              <button
-                onClick={() => handleCopy(card.url)}
-                className="bg-gray-500 text-white px-3 py-1 rounded"
-              >
-                {copiedUrl === card.url ? '복사됨!' : '링크 복사'}
               </button>
             </div>
           </li>

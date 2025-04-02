@@ -1,0 +1,82 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { supabase } from '@/lib/supabaseClient';
+import { User } from '@supabase/supabase-js';
+
+export default function UrlPage() {
+  const [url, setUrl] = useState('');
+  const router = useRouter();
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    (async () => {
+      const { data } = await supabase.auth.getUser();
+      if (data?.user) {
+        setUser(data.user);
+      } else {
+        router.push('/');
+      }
+      setLoading(false);
+    })();
+  }, []);
+
+  const handleCreate = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!user) return;
+
+    if (!/^[a-zA-Z0-9_]+$/.test(url)) {
+      alert('URL은 영문, 숫자, 밑줄(_)만 사용할 수 있어요.');
+      return;
+    }
+
+    const { data: existing } = await supabase
+      .from('users')
+      .select('id')
+      .eq('url', url)
+      .single();
+
+    if (existing) {
+      alert('이미 존재하는 URL이에요 😢');
+      return;
+    }
+
+    const { error } = await supabase.from('users').insert({
+      url,
+      auth_user_id: user.id,
+    });
+
+    if (error) {
+      alert('생성 실패 😢');
+      console.error(error);
+      return;
+    }
+
+    router.push(`/edit/${url}`);
+  };
+
+  if (loading) return <p className="p-6 text-center">로딩 중...</p>;
+
+  return (
+    <div className="min-h-screen p-6">
+
+      {/* 명함 생성 폼 */}
+      <div className="flex items-center justify-center">
+        <form onSubmit={handleCreate} className="space-y-4 w-full max-w-sm">
+          <input
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
+            placeholder="원하는 URL을 입력하세요 (예: kimdev)"
+            className="w-full p-2 border rounded"
+          />
+          <button className="w-full bg-blue-600 text-white p-2 rounded" type="submit">
+            생성하기
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+}

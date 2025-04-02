@@ -19,7 +19,7 @@ export default function AuthCallback() {
 
       console.log('로그인 성공! 세션:', data?.session);
 
-      router.replace('/'); // 로그인 성공 후 이동할 페이지
+      router.replace('/mypage'); // 로그인 성공 후 이동할 페이지
     };
 
     handleOAuthCallback();

@@ -10,12 +10,12 @@ export default function Header() {
   const router = useRouter();
 
   useEffect(() => {
-    const init = async () => {
+    const fetchUser = async () => {
       const { data } = await supabase.auth.getUser();
       setUser(data.user ?? null);
     };
 
-    init();
+    fetchUser();
 
     const {
       data: { subscription },
@@ -31,7 +31,7 @@ export default function Header() {
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    router.push('/login');
+    router.push('/');
   };
 
   const handleLogin = async () => {
@@ -44,38 +44,39 @@ export default function Header() {
   };
 
   return (
-    <header className="w-full border-b p-4 flex justify-between items-center">
-      <h1
+    <header className="w-full bg-white shadow-md px-8 py-3 flex justify-between items-center">
+      {/* 로고 + 서브텍스트 */}
+      <div
+        className="flex flex-col cursor-pointer"
         onClick={() => router.push('/')}
-        className="text-xl font-bold cursor-pointer"
       >
-        💳 IntroCard
-      </h1>
+        <h1 className="text-xl font-bold leading-tight">IntroCard</h1>
+        <p className="text-sm text-gray-400 -mt-1">Meet me in one glance.</p>
+      </div>
 
+      {/* 로그인 여부에 따라 버튼 분기 */}
       {user ? (
-        <div className="flex flex-col items-end gap-1">
-          <p className="text-sm text-gray-500">{user.email}</p>
-          <div className="flex gap-2">
-            <button
-              onClick={() => router.push('/mypage')}
-              className="px-4 py-1 bg-blue-600 text-white rounded"
-            >
-              마이페이지
-            </button>
-            <button
-              onClick={handleLogout}
-              className="px-4 py-1 bg-gray-700 text-white rounded"
-            >
-              로그아웃
-            </button>
-          </div>
+        <div className="flex items-center gap-4 text-sm text-gray-700">
+          <span>{user.email}</span>
+          <button
+            onClick={() => router.push('/mypage')}
+            className="px-4 py-1 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition"
+          >
+            My Page
+          </button>
+          <button
+            onClick={handleLogout}
+            className="px-4 py-1 bg-gray-600 text-white rounded-full hover:bg-gray-700 transition"
+          >
+            Log out
+          </button>
         </div>
       ) : (
         <button
           onClick={handleLogin}
-          className="px-4 py-1 bg-green-600 text-white rounded"
+          className="px-4 py-2 bg-black text-white text-sm rounded-full hover:bg-gray-800 transition"
         >
-          Google로 로그인
+          Start with Google
         </button>
       )}
     </header>
