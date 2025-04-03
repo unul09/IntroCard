@@ -18,7 +18,7 @@ interface FormFields {
 
 interface HistoryEntry {
   area: string;
-  content: string;
+  contents: string[]; // ✅ content → contents (배열)
 }
 
 export function useEditProfile(url: string) {
@@ -67,17 +67,22 @@ export function useEditProfile(url: string) {
 
       const { data: historyData } = await fetchHistoryForEdit(profile.id);
 
+      // 유저 정보 세팅
       const safeData = Object.fromEntries(
         Object.entries(profile).map(([key, value]) => [key, value ?? ''])
       );
-
       setForm((prev) => ({ ...prev, ...safeData }));
       setUserId(profile.id);
 
+      // 히스토리 배열 형태로 세팅
       if (historyData && historyData.length > 0) {
-        setHistories(historyData as HistoryEntry[]);
+        const formatted = historyData.map((h) => ({
+          area: h.area,
+          contents: h.content, // ✅ Supabase의 content: string[] → contents
+        }));
+        setHistories(formatted);
       } else {
-        setHistories([{ area: '', content: '' }]);
+        setHistories([{ area: '', contents: [''] }]);
       }
 
       setLoading(false);

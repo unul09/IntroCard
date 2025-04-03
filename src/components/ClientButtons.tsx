@@ -1,7 +1,6 @@
-// src/components/ClientButtons.tsx
 'use client';
 
-import html2canvas from 'html2canvas';
+import { toPng } from 'html-to-image';
 import { useRef } from 'react';
 
 export default function ClientButtons({ targetId }: { targetId: string }) {
@@ -11,17 +10,21 @@ export default function ClientButtons({ targetId }: { targetId: string }) {
     const element = document.getElementById(targetId);
     if (!element) return;
 
-    const canvas = await html2canvas(element, {
-      useCORS: true,        // ✅ 외부 이미지 허용
-      allowTaint: false,    // ✅ 보안 우회 방지
-      scale: 2,             // ✅ 고해상도 렌더링
-    });
+    try {
+      const dataUrl = await toPng(element, {
+        cacheBust: true,
+        backgroundColor: '#ffffff', // ✅ 배경 색상 명시
+        pixelRatio: 2,              // ✅ 고해상도
+      });
 
-    const dataUrl = canvas.toDataURL('image/png');
-    const link = document.createElement('a');
-    link.href = dataUrl;
-    link.download = 'introcard.png';
-    link.click();
+      const link = document.createElement('a');
+      link.href = dataUrl;
+      link.download = 'introcard.png';
+      link.click();
+    } catch (error) {
+      console.error('이미지 저장 중 오류 발생:', error);
+      alert('이미지 저장에 실패했어요 🥲');
+    }
   };
 
   const handleCopy = () => {
