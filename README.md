@@ -5,7 +5,7 @@
 
 > 🔗 데모 링크: [https://intro-card-one.vercel.app/](https://intro-card-one.vercel.app/)
 
----
+<br>
 
 ## ✨ 주요 기능
 
@@ -17,39 +17,35 @@
 - 로그인 없이도 다른 사람의 프로필 조회
 - 본인이 생성한 프로필 수정/삭제 (Supabase + RLS 기반 권한 관리)
 
----
+<br>
 
 ## 🖼️ 예시 화면
 
 ### 🌟 메인 랜딩 페이지
-
-![IntroCard Main](![image](https://github.com/user-attachments/assets/8c6a0c90-d3d7-4b72-a759-72189c8f3050)
-)
+![image](https://github.com/user-attachments/assets/223dafcf-066a-49d5-8eb2-e137a9f1afa5)
+<br>
 
 ### 🔍 프로필 조회
-
-![Profile](![image](https://github.com/user-attachments/assets/48b12f0d-e766-4da4-ab66-bfe67aa23d56)
-)
+![image](https://github.com/user-attachments/assets/48b12f0d-e766-4da4-ab66-bfe67aa23d56)
+<br>
 
 ### ✏️ 프로필 수정
-
-![Edit](![image](https://github.com/user-attachments/assets/17f771ae-6a1f-4681-970e-6135707551f7)
-)
-
----
+![image](https://github.com/user-attachments/assets/17f771ae-6a1f-4681-970e-6135707551f7)
+<br>
+<br>
 
 ## 🛠️ 사용 방법
 
 1. **로그인**  
-   - [Google 계정으로 로그인](https://intro-card-one.vercel.app/)
+   - Google 계정으로 로그인
 2. **URL 등록**  
-   - 원하는 프로필 URL을 입력해 생성하세요
+   - 원하는 프로필 URL을 입력해 생성
 3. **프로필 편집**  
    - 이미지, 소개, 연락처, 히스토리 등을 입력하고 저장
 4. **공유 & 다운로드**  
    - 프로필을 링크로 공유하거나 PNG 이미지로 다운로드 가능
 
----
+<br>
 
 ## 🧑‍💻 기술 스택
 
@@ -60,7 +56,7 @@
 - **html-to-image** (이미지 다운로드)
 - **React Image Crop** (이미지 자르기)
 
----
+<br>
 
 ## 📌 배포 주소
 
