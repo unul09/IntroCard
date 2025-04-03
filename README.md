@@ -1,36 +1,67 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🪪 IntroCard
 
-## Getting Started
+**IntroCard**는 나를 소개하는 디지털 명함을 간편하게 생성하고 공유할 수 있는 웹 서비스입니다.  
+한눈에 나를 보여주는 **소셜 링크, 프로젝트, 이력 등**을 정리하여 개인 프로필을 만들고, 이미지로 저장하거나 링크로 공유하세요!
 
-First, run the development server:
+> 🔗 데모 링크: [https://intro-card-one.vercel.app/](https://intro-card-one.vercel.app/)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## ✨ 주요 기능
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- 나만의 URL로 프로필 생성 (`https://intro-card-one.vercel.app/profile/your-url`)
+- 연락처, 소개, 소셜 링크(GitHub, Instagram, Velog) 추가
+- 프로젝트/경력 이력 히스토리 작성
+- 프로필을 PNG 이미지로 다운로드
+- 링크 복사 기능
+- 로그인 없이도 다른 사람의 프로필 조회
+- 본인이 생성한 프로필 수정/삭제 (Supabase + RLS 기반 권한 관리)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 🖼️ 예시 화면
 
-To learn more about Next.js, take a look at the following resources:
+### 🌟 메인 랜딩 페이지
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+![IntroCard Main](![image](https://github.com/user-attachments/assets/8c6a0c90-d3d7-4b72-a759-72189c8f3050)
+)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 🔍 프로필 조회
 
-## Deploy on Vercel
+![Profile](![image](https://github.com/user-attachments/assets/48b12f0d-e766-4da4-ab66-bfe67aa23d56)
+)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### ✏️ 프로필 수정
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+![Edit](![image](https://github.com/user-attachments/assets/17f771ae-6a1f-4681-970e-6135707551f7)
+)
+
+---
+
+## 🛠️ 사용 방법
+
+1. **로그인**  
+   - [Google 계정으로 로그인](https://intro-card-one.vercel.app/)
+2. **URL 등록**  
+   - 원하는 프로필 URL을 입력해 생성하세요
+3. **프로필 편집**  
+   - 이미지, 소개, 연락처, 히스토리 등을 입력하고 저장
+4. **공유 & 다운로드**  
+   - 프로필을 링크로 공유하거나 PNG 이미지로 다운로드 가능
+
+---
+
+## 🧑‍💻 기술 스택
+
+- **Next.js 15** + **App Router**
+- **Tailwind CSS**
+- **Supabase** (Auth, DB, Storage)
+- **Vercel** (배포 & CI/CD)
+- **html-to-image** (이미지 다운로드)
+- **React Image Crop** (이미지 자르기)
+
+---
+
+## 📌 배포 주소
+
+👉 [https://intro-card-one.vercel.app/](https://intro-card-one.vercel.app/)
